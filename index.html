@@ -1,5 +1,139 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
-  <body></body>
+  <head>
+    <title>ETCH-A-SKETCH</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section id="buttons"></section>
+    <section id="main"></section>
+    <script>
+      const buttons = document.getElementById("buttons");
+      const container = document.getElementById("main");
+      const containerStyle = getComputedStyle(container);
+      const button = document.createElement("button");
+      const button2 = document.createElement("button");
+      const button3 = document.createElement("button");
+      const button4 = document.createElement("button");
+
+      buttons.style.display = "flex";
+      buttons.style.justifyContent = "center";
+      buttons.style.alignItems = "center";
+
+      button.style.margin = "10px";
+      button.textContent = "Create new board";
+
+      button2.style.margin = "10px";
+      button2.textContent = "Clean board";
+
+      button3.style.margin = "10px";
+      button3.textContent = "Color";
+
+      button4.style.margin = "10px";
+      button4.textContent = "Shade";
+
+      buttons.appendChild(button);
+      buttons.appendChild(button3);
+      buttons.appendChild(button4);
+      buttons.appendChild(button2);
+
+      button.addEventListener("click", createNew);
+      button2.addEventListener("click", clean);
+      button3.addEventListener("click", color);
+      button4.addEventListener("click", shade);
+      document.addEventListener("mouseover", trail);
+
+      drowFloat(36);
+
+      function createNew() {
+        container.innerHTML = "";
+        squaresNumber = prompt("how many squares per side do you want?", 36);
+        isNaN(squaresNumber) || squaresNumber > 200
+          ? drowFloat(36)
+          : drowFloat(squaresNumber);
+      }
+
+      function drowFloat(
+        squareNumber = 16,
+        squareLength = Number(containerStyle.width.replace("px", ""))
+      ) {
+        squareLength /= squareNumber;
+        for (let i = 0; i < squareNumber; i++) {
+          for (let j = 0; j < squareNumber; j++) {
+            const square = document.createElement("div");
+            square.style.width = squareLength - 2 + "px";
+            square.style.height = squareLength - 2 + "px";
+            square.style.boxSizing = "border-box";
+            square.style.border = "solid";
+            square.style.borderWidth = "1px";
+            square.style.margin = "1px";
+            square.style.cssFloat = "left";
+            if (j === 0) {
+              square.style.clear = "left";
+            }
+            container.appendChild(square);
+          }
+        }
+      }
+
+      function trail(event) {
+        if (event.target.localName === "div") {
+          event.target.style.backgroundColor = `rgb(0,0,0)`;
+        }
+      }
+
+      function colorTrail(event) {
+        if (event.target.localName === "div") {
+          event.target.style.backgroundColor = `rgb(${Math.random() *
+            255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+        }
+      }
+
+      function shadeTrail(event) {
+        if (event.target.localName === "div") {
+          let color;
+          if (event.target.style.backgroundColor === "") {
+            color = 255 * 0.9;
+            event.target.style.backgroundColor = `rgb(${color},${color},${color})`;
+          } else {
+            color =
+              Number(event.target.style.backgroundColor.split(",")[1]) -
+              255 * 0.1;
+            event.target.style.backgroundColor = `rgb(${color},${color},${color})`;
+          }
+        }
+      }
+
+      function clean() {
+        squares = container.getElementsByTagName("div");
+        for (let i = 0; i < squares.length; i++) {
+          squares[i].style.backgroundColor = "";
+        }
+      }
+
+      function color() {
+        button3.textContent = "Black";
+        button3.removeEventListener("click", color);
+        button3.addEventListener("click", black);
+        document.removeEventListener("mouseover", trail);
+        document.removeEventListener("mouseover", shadeTrail);
+        document.addEventListener("mouseover", colorTrail);
+      }
+
+      function black() {
+        button3.textContent = "Color";
+        button3.removeEventListener("click", black);
+        button3.addEventListener("click", color);
+        document.removeEventListener("mouseover", colorTrail);
+        document.removeEventListener("mouseover", shadeTrail);
+        document.addEventListener("mouseover", trail);
+      }
+
+      function shade() {
+        document.removeEventListener("mouseover", trail);
+        document.removeEventListener("mouseover", colorTrail);
+        document.addEventListener("mouseover", shadeTrail);
+      }
+    </script>
+  </body>
 </html>
