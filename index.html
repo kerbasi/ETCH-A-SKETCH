@@ -5,20 +5,40 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <section id="buttons"></section>
+    <h1>ETCH-A-SKETCH</h1>
+    <section id="mainButtons"></section>
+
     <section id="main"></section>
+    <section id="secondaryButtons"></section>
+    <section id="footer"></section>
     <script>
-      const buttons = document.getElementById("buttons");
+      const buttons = document.getElementById("mainButtons");
+      const buttons2 = document.getElementById("secondaryButtons");
       const container = document.getElementById("main");
       const containerStyle = getComputedStyle(container);
+      const footer = document.getElementById("footer");
       const button = document.createElement("button");
       const button2 = document.createElement("button");
       const button3 = document.createElement("button");
       const button4 = document.createElement("button");
+      const button5 = document.createElement("button");
+      const button6 = document.createElement("button");
+      const button7 = document.createElement("button");
+      let userInput = 16;
+      let createMetod = drowFlexbox;
+
+      container.style.width = "40%";
+      container.style.height = containerStyle.width;
+
+      footer.style.textAlign = "center";
 
       buttons.style.display = "flex";
       buttons.style.justifyContent = "center";
       buttons.style.alignItems = "center";
+
+      buttons2.style.display = "flex";
+      buttons2.style.justifyContent = "center";
+      buttons2.style.alignItems = "center";
 
       button.style.margin = "10px";
       button.textContent = "Create new board";
@@ -32,48 +52,134 @@
       button4.style.margin = "10px";
       button4.textContent = "Shade";
 
+      button5.style.margin = "10px";
+      button5.textContent = "Float";
+
+      button6.style.margin = "10px";
+      button6.textContent = "Inline-box";
+
+      button7.style.margin = "10px";
+      button7.textContent = "Flexbox";
+
       buttons.appendChild(button);
       buttons.appendChild(button3);
       buttons.appendChild(button4);
       buttons.appendChild(button2);
+      buttons2.appendChild(button5);
+      buttons2.appendChild(button6);
+      buttons2.appendChild(button7);
 
       button.addEventListener("click", createNew);
       button2.addEventListener("click", clean);
       button3.addEventListener("click", color);
       button4.addEventListener("click", shade);
+      button5.addEventListener("click", swithcToFloat);
+      button6.addEventListener("click", swithcToInline);
+      button7.addEventListener("click", swithcToFlexbox);
       document.addEventListener("mouseover", trail);
+      window.addEventListener("resize", heightChenge);
 
-      drowFloat(36);
+      createMetod();
 
-      function createNew() {
+      function swithcToFloat() {
+        createMetod = drowFloat;
+        createNew();
+      }
+
+      function swithcToInline() {
+        createMetod = drowInlineBlock;
+        createNew();
+      }
+
+      function swithcToFlexbox() {
+        createMetod = drowFlexbox;
+        createNew();
+      }
+
+      function heightChenge() {
+        console.log(1);
+        container.style.height = containerStyle.width;
         container.innerHTML = "";
-        squaresNumber = prompt("how many squares per side do you want?", 36);
-        isNaN(squaresNumber) || squaresNumber > 200
-          ? drowFloat(36)
-          : drowFloat(squaresNumber);
+        drowInlineBlock(userInput);
+      }
+
+      function createNew(needPrompt = false) {
+        if (needPrompt) {
+          userInput = prompt("how many squares per side do you want?");
+        }
+        container.innerHTML = "";
+        isNaN(userInput) || userInput > 200
+          ? createMetod((userInput = 36))
+          : createMetod(userInput);
       }
 
       function drowFloat(
-        squareNumber = 16,
+        squareNumber = userInput,
         squareLength = Number(containerStyle.width.replace("px", ""))
       ) {
         squareLength /= squareNumber;
+        container.style.lineHeight = "";
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
             const square = document.createElement("div");
-            square.style.width = squareLength - 2 + "px";
-            square.style.height = squareLength - 2 + "px";
+            square.style.width = squareLength - 1 + "px";
+            square.style.height = squareLength - 1 + "px";
             square.style.boxSizing = "border-box";
             square.style.border = "solid";
             square.style.borderWidth = "1px";
-            square.style.margin = "1px";
+            square.style.margin = "0.5px";
             square.style.cssFloat = "left";
-            if (j === 0) {
-              square.style.clear = "left";
-            }
+
             container.appendChild(square);
           }
         }
+        footer.textContent = "Created with - float property";
+      }
+
+      function drowInlineBlock(
+        squareNumber = userInput,
+        squareLength = Number(containerStyle.width.replace("px", ""))
+      ) {
+        squareLength /= squareNumber;
+        container.style.lineHeight = 0;
+        for (let i = 0; i < squareNumber; i++) {
+          for (let j = 0; j < squareNumber; j++) {
+            const square = document.createElement("div");
+            square.style.width = squareLength - 1 + "px";
+            square.style.height = squareLength - 1 + "px";
+            square.style.boxSizing = "border-box";
+            square.style.border = "solid";
+            square.style.borderWidth = "1px";
+            square.style.margin = "0.5px";
+            square.style.display = "inline-block";
+            container.appendChild(square);
+          }
+        }
+        footer.textContent = "Created with - display: inline-block";
+      }
+
+      function drowFlexbox(
+        squareNumber = userInput,
+        squareLength = Number(containerStyle.width.replace("px", ""))
+      ) {
+        squareLength /= squareNumber;
+        container.style.lineHeight = "";
+        container.style.display = "flex";
+        container.style.flexDirection = "row";
+        container.style.flexWrap = "wrap";
+        container.style.justifyContent = "space-between";
+        for (let i = 0; i < squareNumber; i++) {
+          for (let j = 0; j < squareNumber; j++) {
+            const square = document.createElement("div");
+            square.style.width = squareLength - 1 + "px";
+            square.style.height = squareLength - 1 + "px";
+            square.style.boxSizing = "border-box";
+            square.style.border = "solid";
+            square.style.borderWidth = "1px";
+            container.appendChild(square);
+          }
+        }
+        footer.textContent = "Created with - flexbox";
       }
 
       function trail(event) {
