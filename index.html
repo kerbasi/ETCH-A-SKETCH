@@ -115,10 +115,16 @@
 
       function createNew(needPrompt = false) {
         if (needPrompt) {
-          userInput = prompt("how many squares per side do you want?");
+          userInput = prompt(
+            "how many squares per side do you want? (1-99)",
+            36
+          );
         }
         container.innerHTML = "";
-        isNaN(userInput) || userInput > 200 || userInput == 0
+        isNaN(userInput) ||
+        userInput > 100 ||
+        userInput == 0 ||
+        userInput === null
           ? createMetod((userInput = 36))
           : createMetod(userInput);
       }
@@ -132,8 +138,8 @@
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
             const square = document.createElement("div");
-            square.style.width = squareLength - 1.05 + "px";
-            square.style.height = squareLength - 1.05 + "px";
+            square.style.width = squareLength - 1.01 + "px";
+            square.style.height = squareLength - 1.01 + "px";
             square.style.boxSizing = "border-box";
             square.style.border = "solid";
             square.style.borderWidth = "1px";
@@ -156,8 +162,8 @@
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
             const square = document.createElement("div");
-            square.style.width = squareLength - 1.05 + "px";
-            square.style.height = squareLength - 1.05 + "px";
+            square.style.width = squareLength - 1.01 + "px";
+            square.style.height = squareLength - 1.01 + "px";
             square.style.boxSizing = "border-box";
             square.style.border = "solid";
             square.style.borderWidth = "1px";
@@ -182,8 +188,8 @@
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
             const square = document.createElement("div");
-            square.style.width = squareLength - 1.05 + "px";
-            square.style.height = squareLength - 1.05 + "px";
+            square.style.width = squareLength - 1.01 + "px";
+            square.style.height = squareLength - 1.01 + "px";
             square.style.boxSizing = "border-box";
             square.style.border = "solid";
             square.style.borderWidth = "1px";
@@ -209,8 +215,8 @@
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
             const square = document.createElement("div");
-            square.style.width = squareLength - 1.05 + "px";
-            square.style.height = squareLength - 1.05 + "px";
+            square.style.width = squareLength - 1.01 + "px";
+            square.style.height = squareLength - 1.01 + "px";
             square.style.boxSizing = "border-box";
             square.style.border = "solid";
             square.style.borderWidth = "1px";
