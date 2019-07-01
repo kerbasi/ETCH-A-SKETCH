@@ -24,10 +24,11 @@
       const button5 = document.createElement("button");
       const button6 = document.createElement("button");
       const button7 = document.createElement("button");
+      const button8 = document.createElement("button");
       let userInput = 16;
-      let createMetod = drowFlexbox;
+      let createMetod = drowFloat;
 
-      container.style.width = "40%";
+      container.style.width = "35%";
       container.style.height = containerStyle.width;
 
       footer.style.textAlign = "center";
@@ -61,6 +62,9 @@
       button7.style.margin = "10px";
       button7.textContent = "Flexbox";
 
+      button8.style.margin = "10px";
+      button8.textContent = "Grid";
+
       buttons.appendChild(button);
       buttons.appendChild(button3);
       buttons.appendChild(button4);
@@ -68,6 +72,7 @@
       buttons2.appendChild(button5);
       buttons2.appendChild(button6);
       buttons2.appendChild(button7);
+      buttons2.appendChild(button8);
 
       button.addEventListener("click", createNew);
       button2.addEventListener("click", clean);
@@ -76,10 +81,11 @@
       button5.addEventListener("click", swithcToFloat);
       button6.addEventListener("click", swithcToInline);
       button7.addEventListener("click", swithcToFlexbox);
+      button8.addEventListener("click", swithcToGrid);
       document.addEventListener("mouseover", trail);
       window.addEventListener("resize", heightChenge);
 
-      createMetod();
+      createNew();
 
       function swithcToFloat() {
         createMetod = drowFloat;
@@ -96,11 +102,15 @@
         createNew();
       }
 
+      function swithcToGrid() {
+        createMetod = drowGrid;
+        createNew();
+      }
+
       function heightChenge() {
-        console.log(1);
         container.style.height = containerStyle.width;
         container.innerHTML = "";
-        drowInlineBlock(userInput);
+        createMetod(userInput);
       }
 
       function createNew(needPrompt = false) {
@@ -108,7 +118,7 @@
           userInput = prompt("how many squares per side do you want?");
         }
         container.innerHTML = "";
-        isNaN(userInput) || userInput > 200
+        isNaN(userInput) || userInput > 200 || userInput == 0
           ? createMetod((userInput = 36))
           : createMetod(userInput);
       }
@@ -118,7 +128,7 @@
         squareLength = Number(containerStyle.width.replace("px", ""))
       ) {
         squareLength /= squareNumber;
-        container.style.lineHeight = "";
+        cleanStyle();
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
             const square = document.createElement("div");
@@ -141,6 +151,7 @@
         squareLength = Number(containerStyle.width.replace("px", ""))
       ) {
         squareLength /= squareNumber;
+        cleanStyle();
         container.style.lineHeight = 0;
         for (let i = 0; i < squareNumber; i++) {
           for (let j = 0; j < squareNumber; j++) {
@@ -163,7 +174,7 @@
         squareLength = Number(containerStyle.width.replace("px", ""))
       ) {
         squareLength /= squareNumber;
-        container.style.lineHeight = "";
+        cleanStyle();
         container.style.display = "flex";
         container.style.flexDirection = "row";
         container.style.flexWrap = "wrap";
@@ -176,10 +187,47 @@
             square.style.boxSizing = "border-box";
             square.style.border = "solid";
             square.style.borderWidth = "1px";
+            square.style.margin = "0.5px";
             container.appendChild(square);
           }
         }
         footer.textContent = "Created with - flexbox";
+      }
+
+      function drowGrid(
+        squareNumber = userInput,
+        squareLength = Number(containerStyle.width.replace("px", ""))
+      ) {
+        squareLength /= squareNumber;
+        cleanStyle();
+        container.style.display = "grid";
+        let gridTemplateColumns = "";
+        for (let i = 0; i < squareNumber; i++) {
+          gridTemplateColumns += "auto ";
+        }
+        container.style.gridTemplateColumns = `${gridTemplateColumns}`;
+        for (let i = 0; i < squareNumber; i++) {
+          for (let j = 0; j < squareNumber; j++) {
+            const square = document.createElement("div");
+            square.style.width = squareLength - 1 + "px";
+            square.style.height = squareLength - 1 + "px";
+            square.style.boxSizing = "border-box";
+            square.style.border = "solid";
+            square.style.borderWidth = "1px";
+            square.style.margin = "0.5px";
+            container.appendChild(square);
+          }
+        }
+        footer.textContent = "Created with - Grid";
+      }
+
+      function cleanStyle() {
+        container.style.lineHeight = "";
+        container.style.display = "";
+        container.style.flexDirection = "";
+        container.style.flexWrap = "";
+        container.style.justifyContent = "";
+        container.style.gridTemplateColumns = "";
       }
 
       function trail(event) {
